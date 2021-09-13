@@ -1,9 +1,18 @@
 [default]
+
+[default.security]
+# Set secret key in .secrets.toml
+# SECRET_KEY = ""
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+[default.server]
 port = 8000
 host = "127.0.0.1"
 log_level = "info"
+reload = false
 
-  [default.db]
-  uri = "@jinja sqlite:///{{ this.current_env | lower }}.db"
-  connect_args = {check_same_thread=false}
+[default.db]
+uri = "@jinja sqlite:///{{ this.current_env | lower }}.db"
+connect_args = {check_same_thread=false}
 

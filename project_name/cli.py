@@ -1,10 +1,10 @@
 import typer
 import uvicorn
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from .app import app
 from .config import settings
-from .db import engine
+from .db import create_db_and_tables, engine
 from .models.user import User
 
 cli = typer.Typer(name="project_name API")
@@ -12,23 +12,31 @@ cli = typer.Typer(name="project_name API")
 
 @cli.command()
 def run(
-    port: int = settings.port,
-    host: str = settings.host,
-    log_level: str = settings.log_level,
+    port: int = settings.server.port,
+    host: str = settings.server.host,
+    log_level: str = settings.server.log_level,
+    reload: bool = settings.server.reload,
 ):  # pragma: no cover
     """Run the API server."""
-    uvicorn.run(app, host=host, port=port, log_level=log_level)
+    uvicorn.run(
+        "project_name.app:app",
+        host=host,
+        port=port,
+        log_level=log_level,
+        reload=reload
+    )
 
 
 @cli.command()
-def create_user(name: str, password: str, superuser: bool = False):
+def create_user(username: str, password: str, superuser: bool = False):
     """Create user"""
+    create_db_and_tables(engine)
     with Session(engine) as session:
-        user = User(name=name, password=password, superuser=superuser)
+        user = User(username=username, password=password, superuser=superuser)
         session.add(user)
         session.commit()
         session.refresh(user)
-        typer.echo(f"created {name} user")
+        typer.echo(f"created {username} user")
         return user
 
 
@@ -42,7 +50,10 @@ def shell():  # pragma: no cover
         "engine": engine,
         "cli": cli,
         "create_user": create_user,
+        "select": select,
+        "Session": Session,
     }
+    typer.echo(f"Auto imports: {list(_vars.keys())}")
     try:
         from IPython import start_ipython
 
