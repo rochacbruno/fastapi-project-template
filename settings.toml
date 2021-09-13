@@ -1,0 +1,5 @@
+[development]
+log_level = "debug"
+
+[production]
+log_level = "error"

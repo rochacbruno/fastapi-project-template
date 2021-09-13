@@ -1,0 +1,9 @@
+[default]
+port = 8000
+host = "127.0.0.1"
+log_level = "info"
+
+  [default.db]
+  uri = "@jinja sqlite:///{{ this.current_env | lower }}.db"
+  connect_args = {check_same_thread=false}
+

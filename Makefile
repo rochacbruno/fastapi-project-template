@@ -115,8 +115,12 @@ switch-to-poetry: ## Switch to poetry package manager.
 init:             ## Initialize the project based on an application template.
 	@./.github/init.sh
 
+.PHONY: shell
+shell:            ## Open a shell in the project.
+	@if [ "$(USING_POETRY)" ]; then poetry shell; exit; fi
+	@./.venv/bin/ipython -c "from project_name import *"
 
-# This project has been generated from rochacbruno/python-project-template
+# This project has been generated from rochacbruno/fastapi-project-template
 # __author__ = 'rochacbruno'
-# __repo__ = https://github.com/rochacbruno/python-project-template
+# __repo__ = https://github.com/rochacbruno/fastapi-project-template
 # __sponsor__ = https://github.com/sponsors/rochacbruno/

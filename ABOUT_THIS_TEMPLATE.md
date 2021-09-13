@@ -96,7 +96,7 @@ I really like [cookiecutter](https://github.com/cookiecutter/cookiecutter) and i
 but for this template I wanted to use the Github `Use this template` button,
 to use this template doesn't require to install extra tooling such as cookiecutter.
 
-Just click on [Use this template](https://github.com/rochacbruno/python-project-template/generate) and you are good to go.
+Just click on [Use this template](https://github.com/rochacbruno/fastapi-project-template/generate) and you are good to go.
 
 The substituions are done using github actions and a simple sed script.
 

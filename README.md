@@ -1,15 +1,18 @@
+# FastAPI Project Template
 
-# Python Project Template
+The base to start an openapi project featuring: SQLModel, Typer, FastAPI, VueJS. 
 
-A low dependency and really simple to start project template for Python Projects.
+See also
 
-See also [Flask-Project-Template](https://github.com/rochacbruno/flask-project-template/) for a full feature Flask project including database, API, admin interface, etc.
+-  [Python-Project-Template](https://github.com/rochacbruno/python-project-template/) for a lean, low dependency Python app.
+-  [Flask-Project-Template](https://github.com/rochacbruno/flask-project-template/) for a full feature Flask project including database, API, admin interface, etc.
+
 
 ### HOW TO USE THIS TEMPLATE
 
-> **DO NOT FORK** this is meant to be used from **[Use this template](https://github.com/rochacbruno/python-project-template/generate)** feature.
+> **DO NOT FORK** this is meant to be used from **[Use this template](https://github.com/rochacbruno/fastapi-project-template/generate)** feature.
 
-1. Click on **[Use this template](https://github.com/rochacbruno/python-project-template/generate)**
+1. Click on **[Use this template](https://github.com/rochacbruno/fastapi-project-template/generate)**
 3. Give a name to your project  
    (e.g. `my_awesome_project` recommendation is to use all lowercase and underscores separation for repo names.)
 3. Wait until the first run of CI finishes  
@@ -23,10 +26,7 @@ See also [Flask-Project-Template](https://github.com/rochacbruno/flask-project-t
 
 ### What is included on this template?
 
-- 🖼️ Templates for starting multiple application types:
-  * **Basic low dependency** Python program (default) [use this template](https://github.com/rochacbruno/python-project-template/generate)
-  * **Flask** with database, admin interface, restapi and authentication [use this template](https://github.com/rochacbruno/flask-project-template/generate).
-  **or Run `make init` after cloning to generate a new project based on a template.**
+- 🖼️ The base to start an openapi project featuring: SQLModel, Typer, FastAPI, VueJS.
 - 📦 A basic [setup.py](setup.py) file to provide installation, packaging and distribution for your project.  
   Template uses setuptools because it's the de-facto standard for Python packages, you can run `make switch-to-poetry` later if you want.
 - 🤖 A [Makefile](Makefile) with the most useful commands to install, test, lint, format and release your project.
@@ -42,7 +42,7 @@ See also [Flask-Project-Template](https://github.com/rochacbruno/flask-project-t
 - 🔄 Continuous integration using [Github Actions](.github/workflows/) with jobs to lint, test and release your project on Linux, Mac and Windows environments.
 
 > Curious about architectural decisions on this template? read [ABOUT_THIS_TEMPLATE.md](ABOUT_THIS_TEMPLATE.md)  
-> If you want to contribute to this template please open an [issue](https://github.com/rochacbruno/python-project-template/issues) or fork and send a PULL REQUEST.
+> If you want to contribute to this template please open an [issue](https://github.com/rochacbruno/fastapi-project-template/issues) or fork and send a PULL REQUEST.
 
 [❤️ Sponsor this project](https://github.com/sponsors/rochacbruno/)
 
@@ -56,26 +56,58 @@ See also [Flask-Project-Template](https://github.com/rochacbruno/flask-project-t
 
 project_description
 
-## Install it from PyPI
+## Install
+
+from source
+```bash
+git clone https://github.com/author_name/project_urlname project_name
+cd project_name
+make install
+```
+
+from pypi
 
 ```bash
 pip install project_name
 ```
 
-## Usage
-
-```py
-from project_name import BaseClass
-from project_name import base_function
-
-BaseClass().base_method()
-base_function()
-```
+## Executing
 
 ```bash
-$ python -m project_name
-#or
-$ project_name
+$ project name run --port 8080
+```
+
+or
+
+```bash
+python -m project_name run --port 8080
+```
+
+or
+
+```bash
+$ uvicorn project_name:app
+```
+
+## First run
+
+```bash
+❯ project_name --help
+Usage: project_name [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --install-completion [bash|zsh|fish|powershell|pwsh]
+                                  Install completion for the specified shell.
+  --show-completion [bash|zsh|fish|powershell|pwsh]
+                                  Show completion for the specified shell, to
+                                  copy it or customize the installation.
+  --help                          Show this message and exit.
+
+Commands:
+  create-user  Create user
+  run          Run the API server.
+  shell        Opens an interactive shell with objects auto imported
+
 ```
 
 ## Development

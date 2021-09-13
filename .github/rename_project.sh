@@ -23,10 +23,10 @@ original_description="project_description"
 # for filename in $(find . -name "*.*") 
 for filename in $(git ls-files) 
 do
-    sed -i "s/$original_author/$author/g" $filename
-    sed -i "s/$original_name/$name/g" $filename
-    sed -i "s/$original_urlname/$urlname/g" $filename
-    sed -i "s/$original_description/$description/g" $filename
+    sed -i "s/$original_author/$author/gI" $filename
+    sed -i "s/$original_name/$name/gI" $filename
+    sed -i "s/$original_urlname/$urlname/gI" $filename
+    sed -i "s/$original_description/$description/gI" $filename
     echo "Renamed $filename"
 done
 
