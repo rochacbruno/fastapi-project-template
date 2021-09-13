@@ -9,3 +9,5 @@ sqlmodel
 typer
 dynaconf
 jinja2
+python-jose[cryptography]
+passlib[bcrypt]

@@ -1,5 +1,12 @@
 [development]
+dynaconf_merge = true
+
+[development.server]
 log_level = "debug"
+reload = true
 
 [production]
+dynaconf_merge = true
+
+[production.server]
 log_level = "error"
