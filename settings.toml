@@ -1,6 +1,9 @@
 [development]
 dynaconf_merge = true
 
+[development.db]
+echo = true
+
 [development.server]
 log_level = "debug"
 reload = true
@@ -8,5 +11,9 @@ reload = true
 [production]
 dynaconf_merge = true
 
+[production.db]
+echo = false
+
 [production.server]
 log_level = "error"
+reload = false

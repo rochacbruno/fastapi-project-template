@@ -15,4 +15,4 @@ reload = false
 [default.db]
 uri = "@jinja sqlite:///{{ this.current_env | lower }}.db"
 connect_args = {check_same_thread=false}
-
+echo = false

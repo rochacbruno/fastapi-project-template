@@ -5,7 +5,9 @@ from sqlmodel import Session, select
 from .app import app
 from .config import settings
 from .db import create_db_and_tables, engine
-from .models.user import User
+from .security import User
+from .models.content import Content
+
 
 cli = typer.Typer(name="project_name API")
 
@@ -23,7 +25,7 @@ def run(
         host=host,
         port=port,
         log_level=log_level,
-        reload=reload
+        reload=reload,
     )
 
 
@@ -51,7 +53,8 @@ def shell():  # pragma: no cover
         "cli": cli,
         "create_user": create_user,
         "select": select,
-        "Session": Session,
+        "session": Session(engine),
+        "Content": Content,
     }
     typer.echo(f"Auto imports: {list(_vars.keys())}")
     try:

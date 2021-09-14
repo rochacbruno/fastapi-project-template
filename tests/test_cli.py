@@ -27,8 +27,8 @@ def test_cmds_help(cli_client, cli, cmd, args, msg):
     [
         (
             "create-user",
-            ["admin", "admin"],
-            "created admin user",
+            ["admin2", "admin2"],
+            "created admin2 user",
         ),
     ],
 )
