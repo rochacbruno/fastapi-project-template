@@ -5,9 +5,8 @@ from sqlmodel import Session, select
 from .app import app
 from .config import settings
 from .db import create_db_and_tables, engine
-from .security import User
 from .models.content import Content
-
+from .security import User
 
 cli = typer.Typer(name="project_name API")
 

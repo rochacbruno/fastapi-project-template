@@ -133,3 +133,5 @@ dmypy.json
 
 # templates
 .github/templates/*
+.idea/
+
