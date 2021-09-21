@@ -7,6 +7,7 @@ echo = true
 [development.server]
 log_level = "debug"
 reload = true
+cors_origins = ["http://localhost:3000", "http://localhost:4200"]
 
 [production]
 dynaconf_merge = true
@@ -17,3 +18,9 @@ echo = false
 [production.server]
 log_level = "error"
 reload = false
+
+[testing]
+dynaconf_merge = true
+
+[testing.server]
+cors_origins = ["http://localhost:3000", "http://localhost:4200"]
