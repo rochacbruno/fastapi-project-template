@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlmodel import Field, Relationship, Session, SQLModel
 
-from project_name.models.content import Content, ContentResponse
+from fastapi_project_template.models.content import Content, ContentResponse
 
 from .config import settings
 from .db import engine
