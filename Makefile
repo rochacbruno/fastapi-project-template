@@ -120,6 +120,18 @@ shell:            ## Open a shell in the project.
 	@if [ "$(USING_POETRY)" ]; then poetry shell; exit; fi
 	@./.venv/bin/ipython -c "from project_name import *"
 
+.PHONY: docker-build
+docker-build:	  ## Builder docker images
+	@docker-compose -f docker-compose-dev.yaml -p project_name build
+
+.PHONY: docker-dev-run
+docker-run:  	  ## Run docker development images
+	@docker-compose -f docker-compose-dev.yaml -p project_name up -d
+
+.PHONY: docker-dev-stop
+docker-stop: 	  ## Bring down docker dev environment
+	@docker-compose -f docker-compose-dev.yaml -p project_name down
+
 # This project has been generated from rochacbruno/fastapi-project-template
 # __author__ = 'rochacbruno'
 # __repo__ = https://github.com/rochacbruno/fastapi-project-template
