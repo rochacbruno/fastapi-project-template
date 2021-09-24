@@ -8,19 +8,19 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/project_name
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/fastapi_project_template
     volumes:
       - .:/home/app/web
     depends_on:
       - db
   db:
     build: postgres
-    image: project_name_postgres-13-alpine-multi-user
+    image: fastapi_project_template_postgres-13-alpine-multi-user
     volumes:
-      - $HOME/.postgres/project_name_db/data/postgresql:/var/lib/postgresql/data
+      - $HOME/.postgres/fastapi_project_template_db/data/postgresql:/var/lib/postgresql/data
     ports:
       - 5435:5432
     environment:
-      - POSTGRES_DBS=project_name, project_name_test
+      - POSTGRES_DBS=fastapi_project_template, fastapi_project_template_test
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
