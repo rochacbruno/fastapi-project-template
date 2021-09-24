@@ -47,8 +47,8 @@ if settings.server and settings.server.get("cors_origins", None):
         CORSMiddleware,
         allow_origins=settings.server.cors_origins,
         allow_credentials=settings.get("server.cors_allow_credentials", True),
-        allow_methods=settings.get("server.cors_allow_methods",  ["*"]),
-        allow_headers=settings.get("server.cors_allow_headers",  ["*"]),
+        allow_methods=settings.get("server.cors_allow_methods", ["*"]),
+        allow_headers=settings.get("server.cors_allow_headers", ["*"]),
     )
 
 app.include_router(main_router)

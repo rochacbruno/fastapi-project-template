@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/project_name
+    volumes:
+      - .:/home/app/web
+    depends_on:
+      - db
+  db:
+    build: postgres
+    image: project_name_postgres-13-alpine-multi-user
+    volumes:
+      - $HOME/.postgres/project_name_db/data/postgresql:/var/lib/postgresql/data
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_DBS=project_name, project_name_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
