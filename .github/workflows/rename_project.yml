@@ -4,7 +4,11 @@ on: [push]
 
 jobs:
   rename-project:
-    if: ${{ github.repository	!= 'rochacbruno/fastapi-project-template' }}
+    if: |-
+      ${{
+      github.repository	!= 'rochacbruno/fastapi-project-template' ||
+      github.repository	!= 'sarath-ps/fastapi-project-template'
+      }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
