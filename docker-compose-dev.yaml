@@ -8,7 +8,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/project_name
+      - PROJECT_NAME_DB__uri=postgresql://postgres:postgres@db:5432/project_name
+      - PROJECT_NAME_DB__connect_args={}
     volumes:
       - .:/home/app/web
     depends_on:
