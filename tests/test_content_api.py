@@ -77,3 +77,18 @@ def test_content_update_unauthorized(api_client_not_superuser):
         },
     )
     assert response.status_code == 403
+
+
+def test_content_delete_404(api_client_authenticated):
+    response = api_client_authenticated.delete("/content/999/")
+    assert response.status_code == 404
+
+
+def test_content_delete_unauthorized(api_client_not_superuser):
+    response = api_client_not_superuser.delete("/content/2/")
+    assert response.status_code == 403
+
+
+def test_content_delete(api_client_authenticated):
+    response = api_client_authenticated.delete("/content/2/")
+    assert response.status_code == 200
