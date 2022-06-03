@@ -48,3 +48,43 @@ def test_get_other_profile_404(api_client_not_superuser):
     response = api_client_not_superuser.get("/user/99999")
     result = response.json()
     assert response.status_code == 404
+
+
+def test_change_password_404(api_client_not_superuser):
+    response = api_client_not_superuser.patch(
+        "/user/99999/password/",
+        json={"password": "string", "password_confirm": "string"},
+    )
+    result = response.text
+    assert response.status_code == 404
+
+
+def test_change_password_unauthorised(api_client_not_superuser):
+    response = api_client_not_superuser.patch(
+        "/user/1/password/",
+        json={"password": "string", "password_confirm": "string"},
+    )
+    result = response.text
+    assert response.status_code == 403
+
+
+def test_change_password_no_match(api_client_not_superuser):
+    my_user = api_client_not_superuser.get("/user/me/").json()
+    response = api_client_not_superuser.patch(
+        f"/user/{my_user['id']}/password/",
+        json={"password": "string", "password_confirm": "string1"},
+    )
+    assert response.status_code == 400
+    result = response.json()
+    assert result["detail"] == "Passwords don't match"
+
+
+def test_change_password(api_client_not_superuser):
+    my_user = api_client_not_superuser.get("/user/me/").json()
+    response = api_client_not_superuser.patch(
+        f"/user/{my_user['id']}/password/",
+        json={"password": "string", "password_confirm": "string"},
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result == my_user
