@@ -18,3 +18,15 @@ def test_content_list(api_client_authenticated):
     assert response.status_code == 200
     result = response.json()
     assert result[0]["slug"] == "hello-test"
+
+
+def test_content_get_individual(api_client_authenticated):
+    response = api_client_authenticated.get("/content/hello-test")
+    assert response.status_code == 200
+    result = response.json()
+    assert result["slug"] == "hello-test"
+
+
+def test_content_get_individual_404(api_client_authenticated):
+    response = api_client_authenticated.get("/content/does-not-exist/")
+    assert response.status_code == 404
