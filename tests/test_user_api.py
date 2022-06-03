@@ -88,3 +88,39 @@ def test_change_password(api_client_not_superuser):
     assert response.status_code == 200
     result = response.json()
     assert result == my_user
+
+
+def test_change_password_by_admin(api_client_authenticated):
+    regular_user = api_client_authenticated.get("/user/regular/").json()
+    response = api_client_authenticated.patch(
+        f"/user/{regular_user['id']}/password/",
+        json={"password": "string", "password_confirm": "string"},
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result == regular_user
+
+
+def test_delete_user_404(api_client_authenticated):
+    response = api_client_authenticated.delete(
+        "/user/99999/",
+    )
+    assert response.status_code == 404
+
+
+def test_delete_user_self_not_allowed(api_client_authenticated):
+    my_user = api_client_authenticated.get("/user/me/").json()
+    response = api_client_authenticated.delete(
+        f"/user/{my_user['id']}/",
+    )
+    assert response.status_code == 403
+
+
+def test_delete_user(api_client_authenticated):
+    user = api_client_authenticated.get("/user/foo/").json()
+    response = api_client_authenticated.delete(
+        f"/user/{user['id']}/",
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["ok"] == True
