@@ -42,3 +42,9 @@ def test_get_other_profile_by_name(api_client_not_superuser):
     result = response.json()
     assert result["username"] == "admin"
     assert result["id"] == 2
+
+
+def test_get_other_profile_404(api_client_not_superuser):
+    response = api_client_not_superuser.get("/user/99999")
+    result = response.json()
+    assert response.status_code == 404
