@@ -9,3 +9,4 @@ codecov
 mypy
 gitchangelog
 mkdocs
+pytest-picked

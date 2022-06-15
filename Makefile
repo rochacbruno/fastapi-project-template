@@ -45,7 +45,7 @@ test: lint        ## Run tests and generate coverage report.
 
 .PHONY: watch
 watch:            ## Run tests on every change.
-	ls **/**.py | entr $(ENV_PREFIX)pytest -s -vvv -l --tb=long --maxfail=1 tests/
+	ls **/**.py | entr $(ENV_PREFIX)pytest --picked=first -s -vvv -l --tb=long --maxfail=1 tests/
 
 .PHONY: clean
 clean:            ## Clean unused files.
