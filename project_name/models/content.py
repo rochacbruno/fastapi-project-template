@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List, Optional, Union
 from pydantic import BaseModel, Extra
 from sqlmodel import Field, Relationship, SQLModel
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no coverage
     from project_name.security import User
 
 

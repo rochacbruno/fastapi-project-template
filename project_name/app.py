@@ -56,4 +56,4 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 def on_startup():
-    create_db_and_tables(engine)
+    create_db_and_tables(engine)  # pragma: no cover

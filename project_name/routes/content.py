@@ -21,15 +21,16 @@ async def list_contents(*, session: Session = ActiveSession):
 async def query_content(
     *, id_or_slug: Union[str, int], session: Session = ActiveSession
 ):
-    content = session.query(Content).where(
+    query = select(Content).where(
         or_(
             Content.id == id_or_slug,
             Content.slug == id_or_slug,
         )
     )
+    content = session.exec(query).one_or_none()
     if not content:
         raise HTTPException(status_code=404, detail="Content not found")
-    return content.first()
+    return content
 
 
 @router.post(

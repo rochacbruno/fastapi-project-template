@@ -50,7 +50,7 @@ class HashedPassword(str):
     @classmethod
     def validate(cls, v):
         """Accepts a plain text password and returns a hashed password."""
-        if not isinstance(v, str):
+        if not isinstance(v, str):  # pragma: no coverage
             raise TypeError("string required")
 
         hashed_password = get_password_hash(v)
@@ -114,7 +114,7 @@ def create_access_token(
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
-    else:
+    else:  # pragma: no cover
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -150,7 +150,7 @@ def get_current_user(
         if authorization := request.headers.get("authorization"):
             try:
                 token = authorization.split(" ")[1]
-            except IndexError:
+            except IndexError:  # pragma: no cover
                 raise credentials_exception
 
     try:
@@ -170,7 +170,7 @@ def get_current_user(
 async def get_current_active_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    if current_user.disabled:
+    if current_user.disabled:  # pragma: no cover
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
@@ -181,7 +181,7 @@ AuthenticatedUser = Depends(get_current_active_user)
 async def get_current_admin_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    if not current_user.superuser:
+    if not current_user.superuser:  # pragma: no cover
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not an admin user"
         )

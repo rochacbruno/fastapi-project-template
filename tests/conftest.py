@@ -63,6 +63,24 @@ def api_client_authenticated():
 
 
 @pytest.fixture(scope="function")
+def api_client_not_superuser():
+
+    try:
+        create_user("regular", "regular", superuser=False)
+    except IntegrityError:
+        pass
+
+    client = TestClient(app)
+    token = client.post(
+        "/token",
+        data={"username": "regular", "password": "regular"},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    ).json()["access_token"]
+    client.headers["Authorization"] = f"Bearer {token}"
+    return client
+
+
+@pytest.fixture(scope="function")
 def cli_client():
     return CliRunner()
 

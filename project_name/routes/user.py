@@ -70,6 +70,14 @@ async def update_user_password(
     return user
 
 
+# Order of these functions matters here
+# The /me/ path needs to be higher than the wildcard path below or else
+# this function will never be called.
+@router.get("/me/", response_model=UserResponse)
+async def my_profile(current_user: User = AuthenticatedUser):
+    return current_user
+
+
 @router.get(
     "/{user_id_or_username}/",
     response_model=UserResponse,
@@ -78,21 +86,16 @@ async def update_user_password(
 async def query_user(
     *, session: Session = ActiveSession, user_id_or_username: Union[str, int]
 ):
-    user = session.query(User).where(
+    query = select(User).where(
         or_(
             User.id == user_id_or_username,
             User.username == user_id_or_username,
         )
     )
-
+    user = session.exec(query).one_or_none()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return user.first()
-
-
-@router.get("/me/", response_model=UserResponse)
-async def my_profile(current_user: User = AuthenticatedUser):
-    return current_user
+    return user
 
 
 @router.delete("/{user_id}/", dependencies=[AdminUser])
