@@ -7,6 +7,7 @@ from sqlmodel import Session, or_, select
 from ..db import ActiveSession
 from ..security import (
     AdminUser,
+    AuthenticatedFreshUser,
     AuthenticatedUser,
     HashedPassword,
     User,
@@ -27,6 +28,15 @@ async def list_users(*, session: Session = ActiveSession):
 
 @router.post("/", response_model=UserResponse, dependencies=[AdminUser])
 async def create_user(*, session: Session = ActiveSession, user: UserCreate):
+
+    # verify user with username doesn't already exist
+    try:
+        await query_user(session=session, user_id_or_username=user.username)
+    except HTTPException:
+        pass
+    else:
+        raise HTTPException(status_code=422, detail="Username already exists")
+
     db_user = User.from_orm(user)
     session.add(db_user)
     session.commit()
@@ -37,7 +47,7 @@ async def create_user(*, session: Session = ActiveSession, user: UserCreate):
 @router.patch(
     "/{user_id}/password/",
     response_model=UserResponse,
-    dependencies=[AuthenticatedUser],
+    dependencies=[AuthenticatedFreshUser],
 )
 async def update_user_password(
     *,
@@ -85,14 +95,9 @@ async def query_user(
         )
     )
 
-    if not user:
+    if not user.first():
         raise HTTPException(status_code=404, detail="User not found")
     return user.first()
-
-
-@router.get("/me/", response_model=UserResponse)
-async def my_profile(current_user: User = AuthenticatedUser):
-    return current_user
 
 
 @router.delete("/{user_id}/", dependencies=[AdminUser])

@@ -22,7 +22,12 @@ ALGORITHM = settings.security.algorithm
 
 class Token(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
+
+
+class RefreshToken(BaseModel):
+    refresh_token: str
 
 
 class TokenData(BaseModel):
@@ -116,7 +121,20 @@ def create_access_token(
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "scope": "access_token"})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+def create_refresh_token(
+    data: dict, expires_delta: Optional[timedelta] = None
+) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire, "scope": "refresh_token"})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
@@ -138,7 +156,7 @@ def get_user(username) -> Optional[User]:
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme), request: Request = None
+    token: str = Depends(oauth2_scheme), request: Request = None, fresh=False
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -156,6 +174,7 @@ def get_current_user(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
+
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
@@ -164,6 +183,9 @@ def get_current_user(
     user = get_user(username=token_data.username)
     if user is None:
         raise credentials_exception
+    if fresh and (not payload["fresh"] and not user.superuser):
+        raise credentials_exception
+
     return user
 
 
@@ -178,6 +200,15 @@ async def get_current_active_user(
 AuthenticatedUser = Depends(get_current_active_user)
 
 
+def get_current_fresh_user(
+    token: str = Depends(oauth2_scheme), request: Request = None
+) -> User:
+    return get_current_user(token, request, True)
+
+
+AuthenticatedFreshUser = Depends(get_current_fresh_user)
+
+
 async def get_current_admin_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
@@ -189,3 +220,9 @@ async def get_current_admin_user(
 
 
 AdminUser = Depends(get_current_admin_user)
+
+
+async def validate_token(token: str = Depends(oauth2_scheme)) -> User:
+
+    user = get_current_user(token=token)
+    return user
