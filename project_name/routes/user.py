@@ -9,12 +9,12 @@ from ..security import (
     AdminUser,
     AuthenticatedFreshUser,
     AuthenticatedUser,
-    HashedPassword,
     User,
     UserCreate,
     UserPasswordPatch,
     UserResponse,
     get_current_user,
+    get_password_hash,
 )
 
 router = APIRouter()
@@ -72,7 +72,7 @@ async def update_user_password(
         raise HTTPException(status_code=400, detail="Passwords don't match")
 
     # Update the password
-    user.password = HashedPassword(patch.password)
+    user.password = get_password_hash(patch.password)
 
     # Commit the session
     session.commit()
